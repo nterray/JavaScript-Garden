@@ -1,4 +1,4 @@
-### `setTimeout` and `setInterval`
+### `setTimeout` et `setInterval`
 
 Since JavaScript is asynchronous, it is possible to schedule the execution of a 
 function by using the `setTimeout` and `setInterval` functions.

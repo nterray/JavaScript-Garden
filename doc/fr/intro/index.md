@@ -1,39 +1,40 @@
-## Intro
+## Introduction
 
-**JavaScript Garden** is a growing collection of documentation about the most 
-quirky parts of the JavaScript programming language. It gives advice to 
-avoid common mistakes and subtle bugs, as well as performance issues and bad 
-practices, that non-expert JavaScript programmers may encounter on their 
-endeavours into the depths of the language.
+**JavaScript Garden** est une liste grandissante de documentation sur
+les aspets les plus bizarres du langage de programmation JavaScript.
+Celle-ci donne des conseils afin d'éviter les erreurs courantes et les bugs subtils, ainsi
+que les problèmes de performance et les mauvaises pratiques, que les développeurs
+qui ne sont pas experts en JavaScript pourraient rencontrer lors de leur périple
+dans les tréfonds du langage.
 
-JavaScript Garden does **not** aim to teach you JavaScript. Former knowledge
-of the language is strongly recommended in order to understand the topics covered
-in this guide. In order to learn the basics of the language, please head over to 
-the excellent [guide][1] on the Mozilla Developer Network.
+JavaScript Garden n'est **pas** destiné à vous apprendre JavaScript. Une connaissance
+préalable est fortement recommandée pour pouvoir comprendre les sujets abordés dans ce
+guide. Afin d'apprendre les bases du langage, consultez cet excellent [guide][1]
+sur le Mozilla Developer Network.
 
-## The Authors
+## Auteurs
 
-This guide is the work of two lovely [Stack Overflow][2] users, [Ivo Wetzel][3]
-(Writing) and [Zhang Yi Jiang][4] (Design).
+Ce guide est le travail de deux utilisateurs de [Stack Overflow][2], [Ivo Wetzel][3]
+(Écriture) et [Zhang Yi Jiang][4] (Design).
 
-## Contributors
+## Contributeurs
 
- - [Caio Romão][5] (Spelling corrections)
- - [Andreas Blixt][6] (Language corrections)
+ - [Caio Romão][5] (Corrections orthographiques)
+ - [Andreas Blixt][6] (Corrections linguistiques)
 
-## Hosting
+## Hébergement
 
-JavaScript Garden is hosted on GitHub, but [Cramer Development][7] supports us
-with a mirror at [JavaScriptGarden.info][8].
+JavaScript Garden est hébergé sur GitHub, mais [Cramer Development][7] nous
+offre un mirroir sur [JavaScriptGarden.info][8].
 
-## License
+## Licence
 
-JavaScript Garden is published under the [MIT license][9] and hosted on
-[GitHub][10]. If you find errors or typos please [file an issue][11] or a pull 
-request on the repository. You can also find us in the [JavaScript room][12] on
-Stack Overflow chat.
+JavaScript Garden est publié sous la [licence MIT][9] et hébergé sur
+[GitHub][10]. Si vous trouvez des erreurs merci de [soumettre un ticket][11] ou
+une pull request sur le dépôt. Vous pouvez également nous trouver sur le
+[salon de discussion JavaScript][12] sur Stack Overflow.
 
-[1]: https://developer.mozilla.org/en/JavaScript/Guide
+[1]: https://developer.mozilla.org/fr/JavaScript/Guide
 [2]: http://stackoverflow.com/
 [3]: http://stackoverflow.com/users/170224/ivo-wetzel
 [4]: http://stackoverflow.com/users/313758/yi-jiang
