@@ -1,66 +1,66 @@
-## Object Usage and Properties
+## Propriétés et utilisation des objets
 
-Everything in JavaScript acts like an object, with the only two exceptions being 
-[`null`](#core.undefined) and [`undefined`](#core.undefined).
+Tout dans JavaScript se comporte comme un objet, hormis deux exceptions que sont
+[`null`](#core.undefined) et [`undefined`](#core.undefined).
 
     false.toString() // 'false'
     [1, 2, 3].toString(); // '1,2,3'
-    
+
     function Foo(){}
     Foo.bar = 1;
     Foo.bar; // 1
 
-A common misconception is that number literals cannot be used as
-objects. That is because a flaw in JavaScript's parser tries to parse the *dot 
-notation* on a number as a floating point literal.
+Il existe une idée fausse comme quoi les nombres ne peuvent pas être utilisés en tant qu'objets.
+Ceci parce qu'un défaut dans l'analyseur JavaScript interprète la notation pointée sur
+un nombre commme un littéral à virgule flottante.
 
-    2.toString(); // raises SyntaxError
 
-There are a couple of workarounds which can be used in order make number 
-literals act as objects too.
+    2.toString(); // entraine une erreur de syntaxe
 
-    2..toString(); // the second point is correctly recognized
-    2 .toString(); // note the space left to the dot
-    (2).toString(); // 2 is evaluated first
+Il existe des moyens de contournement qui peuvent être utilisés afin que les nombres se comportent
+également comme des objets.
 
-### Objects as a Data Type
+    2..toString(); // le deuxième point est correctement interprété
+    2 .toString(); // notez l'espace à gauche du point
+    (2).toString(); // 2 est évalué en premier
 
-Objects in JavaScript can also be used as a [*Hashmap*][1]; they mainly consist 
-of named properties mapping to values.
+### Objets en tant que structure de données
 
-Using an object literal - `{}` notation - it is possible to create a 
-plain object. This new object [inherits](#object.prototype) from `Object.prototype` and 
-has no [own properties](#object.hasownproperty) defined on it.
+Les objets dans JavaScript peuvent aussi être utilisés comme une [*table de hachage*][1], principalement
+comme une association clé-valeur.
 
-    var foo = {}; // a new empty object
+En utilisant un objet littéral - la notation `{}` - il est possible de créer un objet brut.
+Ce nouvel objet [hérite](#object.prototype) de `Object.prototype` et ne possède pas de
+[propriété propre](#object.hasownproperty) définie.
 
-    // a new object with a property called 'test' with value 12
-    var bar = {test: 12}; 
+    var foo = {}; // un objet vide
 
-### Accessing Properties
+    // un objet avec une propriété nommée 'test' valuée à 12
+    var bar = {test: 12};
 
-The properties of an object can be accessed in two ways, via either the dot
-notation or the square bracket notation.
-    
-    var foo = {name: 'kitten'}
-    foo.name; // kitten
-    foo['name']; // kitten
-    
+### Accéder aux propriétés
+
+Les propriétés d'un objet sont accessibles de deux manières, via la notation pointée ou la notation entre crochets.
+
+    var foo = {name: 'chaton'}
+    foo.name; // chaton
+    foo['name']; // chaton
+
     var get = 'name';
-    foo[get]; // kitten
-    
-    foo.1234; // SyntaxError
-    foo['1234']; // works
+    foo[get]; // chaton
 
-Both notations are identical in their workings, with the only difference being that
-the square bracket notation allows for dynamic setting of properties, as well as
-the use of property names that would otherwise lead to a syntax error.
+    foo.1234; // Erreur de syntaxe
+    foo['1234']; // ok
 
-### Deleting Properties
+Les deux notations sont identiques à l'usage, avec la seule différence que
+la notation entre crochets permet de définir dynamiquement des propriétés, ainsi que
+l'utilisation de nom de propriété qui auraient entrainé des erreurs de syntaxe.
 
-The only way to actually remove a property from an object is to use the `delete`
-operator; setting the property to `undefined` or `null` only removes the
-*value* associated with the property, but not the *key*.
+### Supprimer des propriétés
+
+La seule manière de vraiment supprimer une propriété d'un objet est d'utiliser
+l'opérateur `delete`. Assigner `undefined` ou `null` à la propriété ne supprime
+que la *valeur* associée à la propriété, mais pas la *clef*.
 
     var obj = {
         bar: 1,
@@ -77,23 +77,23 @@ operator; setting the property to `undefined` or `null` only removes the
         }
     }
 
-The above outputs both `bar undefined` and `foo null` - only `baz` was
-removed and is therefore missing from the output.
+L'exemple ci-dessus affiche à la fois `bar undefined` et `foo null` - uniquement `baz`
+a été supprimée et n'est donc pas affichée.
 
-### Notation of Keys
+### Écriture des clefs
 
     var test = {
-        'case': 'I am a keyword, so I must be notated as a string',
-        delete: 'I am a keyword, so me too' // raises SyntaxError
+        'case': 'Je suis un mot clef, je doit être écrit comme une chaîne',
+        delete: 'Je suis aussi un mot clef' // entraine une erreur de syntaxe
     };
 
-Object properties can be both notated as plain characters and as strings. Due to
-another mis-design in JavaScript's parser, the above will throw 
-a `SyntaxError` prior to ECMAScript 5.
+Les propriétés d'objets peuvent être écrites à la fois avec des caractères bruts ou en tant que
+chaîne de caractères. À cause d'une autre méconception dans l'analyseur de JavaScript, l'exemple
+ci-dessus lèvera une `SyntaxError` avant ECMAScript 5.
 
-This error arises from the fact that `delete` is a *keyword*; therefore, it must be 
-notated as a *string literal* to ensure that it will be correctly interpreted by
-older JavaScript engines.
+Cette erreur vient du fait que *delete* est un *mot clef* du langage. Il doit donc être noté
+sous forme de *chaîne de caractères* pour s'assurer qu'il sera correctement interprété par les anciens
+moteurs JavaScript.
 
-[1]: http://en.wikipedia.org/wiki/Hashmap
+[1]: http://fr.wikipedia.org/wiki/Table_de_hachage
 
