@@ -1,8 +1,8 @@
 ## Introduction
 
-**JavaScript Garden** est une liste grandissante de documentation sur
+**JavaScript Garden** est une liste de documentation sur
 les aspets les plus bizarres du langage de programmation JavaScript.
-Celle-ci donne des conseils afin d'éviter les erreurs courantes et les bugs subtils, ainsi
+Cette documentation donne des conseils afin d'éviter les erreurs courantes et les bugs subtils, ainsi
 que les problèmes de performance et les mauvaises pratiques, que les développeurs
 qui ne sont pas experts en JavaScript pourraient rencontrer lors de leur périple
 dans les tréfonds du langage.
