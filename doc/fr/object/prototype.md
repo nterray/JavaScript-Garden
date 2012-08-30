@@ -1,116 +1,114 @@
-## The Prototype
+## Le prototype
 
-JavaScript does not feature a classical inheritance model; instead, it uses a 
-*prototypal* one. 
+JavaScript ne propose pas un héritage classique, il se base plutôt sur la programmation
+orienté prototype.
 
-While this is often considered to be one of JavaScript's weaknesses, the 
-prototypal inheritance model is in fact more powerful than the classic model. 
-It is, for example, fairly trivial to build a classic model on top of it, while the
-other way around is a far more difficult task.
+Alors que c'est souvent considéré comme une des faiblesses de JavaScript, le modèle d'héritage
+par prototype est en fait bien plus puissant que le modèle classique. Par exemple il est très
+facile de construire un modèle classique basé sur un modèle prototype alors que l'inverse
+s'avère être une tâche plus ardue.
 
-Due to the fact that JavaScript is basically the only widely used language that
-features prototypal inheritance, it takes some time to adjust to the 
-differences between the two models. 
+Du fait que JavaScript se trouve être le seul langage largement utilisé basé sur l'héritage
+par prototype, du temps est nécessaire pour s'adapter aux différences entre les deux
+modèles.
 
-The first major difference is that inheritance in JavaScript is done by using so
-called *prototype chains*.
+La première différence majeure réside dans le fait que l'héritage dans JavaScript est
+effectué en utilisant les fameuses *chaînes de prototypes*.
 
-> **Note:** Simply using `Bar.prototype = Foo.prototype` will result in both objects
-> sharing the **same** prototype. Therefore, changes to either object's prototype 
-> will affect the prototype of the other as well, which in most cases is not the 
-> desired effect.
+> **Note :** Utiliser simplement `Bar.prototype = Foo.prototype` aura pour résultat
+> d'avoir deux objets partageant le **même** prototype. Ainsi, les changements sur le
+> prototype d'un objet affectera aussi le prototype de l'autre objet, ce qui
+> n'est en général pas l'effet escompté.
 
     function Foo() {
-        this.value = 42;
+        this.valeur = 42;
     }
     Foo.prototype = {
-        method: function() {}
+        methode: function() {}
     };
 
     function Bar() {}
 
-    // Set Bar's prototype to a new instance of Foo
+    // Affecte une instance de Foo au prototype de Bar
     Bar.prototype = new Foo();
-    Bar.prototype.foo = 'Hello World';
+    Bar.prototype.foo = 'Bonjour le monde !';
 
-    // Make sure to list Bar as the actual constructor
+    // Veille à ce que le constructeur soit Bar
     Bar.prototype.constructor = Bar;
 
-    var test = new Bar() // create a new bar instance
+    var test = new Bar() // créer une instance de Bar
 
-    // The resulting prototype chain
-    test [instance of Bar]
-        Bar.prototype [instance of Foo] 
-            { foo: 'Hello World' }
+    // La chaîne de prototypes résultante
+    test [instance de Bar]
+        Bar.prototype [instance de Foo]
+            { foo: 'Bonjour le monde!' }
             Foo.prototype
                 { method: ... }
                 Object.prototype
                     { toString: ... /* etc. */ }
 
-In the above, the object `test` will inherit from both `Bar.prototype` and
-`Foo.prototype`; hence, it will have access to the function `method` that was 
-defined on `Foo`. It will also have access to the property `value` of the
-**one** `Foo` instance that is its prototype. It is important to note that `new
-Bar()` does **not** create a new `Foo` instance, but reuses the one assigned to 
-its prototype; thus, all `Bar` instances will share the **same** `value` property.
+Ci-dessus, l'objet `test` héritera à la fois de `Bar.prototype` et de `Foo.prototype` ;
+il aura donc accès à la fonction `methode` qui a été définié sur Foo. Il aura aussi accès
+à la propriété `valeur` de l'unique instance de `Foo` qui est son prototype. Il est important de
+bien noter que `new Bar()` ne crée **pas** une nouvelle instance de `Foo`, mais réutilise
+celle assigné à son prototype ; ainsi, toutes les instances de `Bar` partage la **même**
+propriété `valeur`.
 
-> **Note:** Do **not** use `Bar.prototype = Foo`, since it will not point to 
-> the prototype of `Foo` but rather to the function object `Foo`. So the 
-> prototype chain will go over `Function.prototype` and not `Foo.prototype`;
-> therefore, `method` will not be on the prototype chain.
+> **Note :** N'utilisez **pas** `Bar.prototype = Foo`, puisqu'il ne pointera pas sur
+> le prototype de `Foo` mais plutôt sur l'objet fonction `Foo`. Donc la chaîne de prototypes
+> ira sur `Function.prototype` au lieu de `Foo.prototype` ; `methode` ne serait donc pas non
+> plus sur la chaîne de prototypes.
 
-### Property Lookup
+### Recherche de propriété
 
-When accessing the properties of an object, JavaScript will traverse the
-prototype chain **upwards** until it finds a property with the requested name.
+Quand on accède au propriété d'un objet, JavaScript va traverser la chaîne de prototype **en amont**
+jusqu'à ce qu'il trouve une propriété avec le même nom.
 
-When it reaches the top of the chain - namely `Object.prototype` - and still
-hasn't found the specified property, it will return the value
-[undefined](#core.undefined) instead.
+Quand il atteint le sommet de la chaîne - nommé `Object.prototype` - et qu'il n'a toujours pas trouvé
+la propriété requise, il retourne la valeur [undefined](#core.undefined) à la place.
 
-### The Prototype Property
+### La propriété prototype
 
-While the prototype property is used by the language to build the prototype
-chains, it is still possible to assign **any** given value to it. However, 
-primitives will simply get ignored when assigned as a prototype.
+Bien que la propriété prototype est utilisé par le langage pour construire la chaîne
+de prototypes, il est tout de même possible de lui assigner **n'importe quelle** valeur.
+Toutefois, les types primitifs sont ignorés lorsqu'ils sont assignés à un prototype.
 
     function Foo() {}
-    Foo.prototype = 1; // no effect
+    Foo.prototype = 1; // pas d'effet
 
-Assigning objects, as shown in the example above, will work, and allows for dynamic
-creation of prototype chains.
+Assigner des objets, de la même façon que dans l'exemple ci-dessus, fonctionne et permet la création
+dynamique de chaînes de prototypes.
 
-### Performance
+### Performances
 
-The lookup time for properties that are high up on the prototype chain can have a
-negative impact on performance critical sections of code. Additionally, trying to 
-access non-existent properties will always traverse the full prototype chain. 
+Le temps de recherche des propriétés qui sont situées loin en amont de la chaîne de prototypes
+peuvent avoir un impact négatif sur les performances de sections critiques de code. De plus,
+essayer d'accéder à des propriétés inexistantes fera traverser toute la chaîne de prototypes.
 
-Also, when [iterating](#object.forinloop) over the properties of an object 
-**every** property that is on the prototype chain will get enumerated.
+De la même manière, quand on [itère](#object.forinloop) sur les propriétés d'un objet, **chacune**
+des propriétés qui sont sur la chaîne de prototypes sera enumérée.
 
-### Extension of Native Prototypes
 
-One mis-feature that is often used is to extend `Object.prototype` or one of the
-other built in prototypes.
+### Extension des prototypes natifs
 
-This technique is called [monkey patching][1] and breaks *encapsulation*. While 
-used by widely spread frameworks such as [Prototype][2], there is still no good 
-reason for cluttering built-in types with additional *non-standard* functionality.
+Une mauvaise pratique courante est d'étendre `Object.prototype` ou un autre des prototypes natifs.
 
-The **only** good reason for extending a built-in prototype is to backport 
-the features of newer JavaScript engines; for example, 
-[`Array.forEach`][3].
+Cette technique est appelée [modification-singe][1] et casse *l'encapsulation*. Bien qu'utilisée
+par des bibliothèque largement répandue comme [Prototype][2], il n'y a vraiment aucune raison
+d'encombrer les types natifs avec l'ajout d'une fonctionnalité non standard.
 
-### In Conclusion
+La **seule** bonne raison d'étendre un prototype natif est pour la compatibilité
+descendante des fonctionnalité des nouveaux moteur JavaScript ; par exemple [`Array.forEach`][3].
 
-It is a **must** to understand the prototypal inheritance model completely 
-before writing complex code which makes use of it. Also, watch the length of 
-the prototype chains and break them up if necessary to avoid possible 
-performance issues. Further, the native prototypes should **never** be extended 
-unless it is for the sake of compatibility with newer JavaScript features.
+### En conclusion
 
-[1]: http://en.wikipedia.org/wiki/Monkey_patch
+Il est **obligatoire** de bien comprendre l'héritage par prototype avant
+de commencer à écrire du code complexe qui se baserait dessus. Également, il faut surveiller la longueur
+des chaînes de prototypes et les casser si nécessaire afin de se prémunir de problèmes de performance.
+Enfin, les prototypes natifs ne devraient **jamais** être étendus à moins que ce ne soit pour des raisons
+de compatibilité descendante avec les nouvelles fonctionnalités de JavaScript.
+
+[1]: http://fr.wikipedia.org/wiki/Monkey-Patch
 [2]: http://prototypejs.org/
 [3]: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/forEach
 
