@@ -1,57 +1,58 @@
 ## `hasOwnProperty`
 
-In order to check whether a object has a property defined on *itself* and **not** 
-somewhere on its [prototype chain](#object.prototype), it is necessary to use the 
-`hasOwnProperty` method which all objects inherit from `Object.prototype`.
+Afin de vérifier si un objet possède une propriété définie sur *lui-même* et **pas**
+autre part sur sa [chaîne de prototpes](#object.prototype), il est nécessaire
+d'utiliser la méthode `hasOwnProperty` que chaque objet hérite de `Object.prototype`.
 
-> **Note:** It is **not** enough to check whether a property is `undefined`. The
-> property might very well exist, but its value just happens to be set to 
-> `undefined`.
+> **Note :** Ce n'est **pas** suffisant de vérifier si une propriété est `undefined`.
+> La propriété peut très bien exister, mais avec une valeur `undefined`.
 
-`hasOwnProperty` is the only thing in JavaScript which deals with properties and 
-does **not** traverse the prototype chain.
+`hasOwnProperty` est la seule chose en JavaScript qui s'occupe des propriétés et
+ne traverse **pas** la chaîne de prototypes.
 
-    // Poisoning Object.prototype
-    Object.prototype.bar = 1; 
+    // Corruption de Object.prototype
+    Object.prototype.bar = 1;
     var foo = {goo: undefined};
-    
+
     foo.bar; // 1
     'bar' in foo; // true
 
     foo.hasOwnProperty('bar'); // false
     foo.hasOwnProperty('goo'); // true
 
-Only `hasOwnProperty` will give the correct and expected result; this is 
-essential when iterating over the properties of any object. There is **no** other 
-way to exclude properties that are not defined on the object *itself*, but 
-somewhere on its prototype chain.  
+Uniquement `hasOwnProperty` donnera le resultat correct et escompté. Ceci est essentiel
+lorsqu'on itère sur les propriétés de n'importe quel objet. Il n'y a **pas** d'autre
+moyen d'exclure les propriétés qui ne sont pas définies sur l'objet **lui-même** mais
+quelque part d'autre sur sa chaîne de prototypes.
 
-### `hasOwnProperty` as a Property
+### `hasOwnProperty` en tant que propriété
 
-JavaScript does **not** protect the property name `hasOwnProperty`; thus, if the
-possibility exists that an object might have a property with this name, it is
-necessary to use an *external* `hasOwnProperty` in order to get correct results.
+JavaScript ne protège **pas** le nom de propriété `hasOwnProperty`. Ainsi, si il
+s'avère qu'un objet doit possèder une propriété avec ce nom, il est nécessaire d'utiliser
+un `hasOwnProperty` *extérieur* afin d'avoir des résultats corrects.
 
     var foo = {
         hasOwnProperty: function() {
             return false;
         },
-        bar: 'Here be dragons'
+        bar: 'terres inconnues'
     };
 
-    foo.hasOwnProperty('bar'); // always returns false
+    foo.hasOwnProperty('bar'); // retourne toujours false
 
-    // Use another Object's hasOwnProperty and call it with 'this' set to foo
+    // Utilise hasOwnProperty d'un autre objet
+    // et appelé avec 'this' valué à foo
     ({}).hasOwnProperty.call(foo, 'bar'); // true
 
-    // It's also possible use the hasOwnProperty property from the Object property for this purpose
+    // Il est aussi possible d'utiliser la propriété
+    // hasOwnProperty de Object pour ce besoin
     Object.prototype.hasOwnProperty.call(obj, 'bar'); // true
 
 
-### In Conclusion
+### En conclusion
 
-When checking for the existence of a property on a object, `hasOwnProperty` is 
-the **only** method of doing so. It is also recommended to make `hasOwnProperty`
-part of **every** [`for in` loop](#object.forinloop); this will avoid errors from 
-extended native [prototypes](#object.prototype).
+Lorsqu'on vérifie l'existence d'une propriété sur un objet, `hasOwnProperty` est
+la **seule** méthode valable. Il est aussi recommendé d'utiliser `hasOwnProperty`
+dans **chaque** [boucle `for in`](#object.forinloop) afin d'éviter les erreurs
+provenant des [prototypes](#object.prototype) natifs étendus.
 

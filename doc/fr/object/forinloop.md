@@ -1,51 +1,51 @@
-## The `for in` Loop
+## La boucle `for in`
 
-Just like the `in` operator, the `for in` loop also traverses the prototype
-chain when iterating over the properties of an object.
+Tout comme l'opérateur `in`, la boucle `for in` traverse la chaîne de prototypes
+quand on itère sur les propriétés d'un objet.
 
-> **Note:** The `for in` loop will **not** iterate over any properties that 
-> have their `enumerable` attribute set to `false`; for example, the `length` 
-> property of an array.
-    
-    // Poisoning Object.prototype
+> **Note :** La boucle `for in` n'itèrera **pas** sur les propriétés qui ont
+> leur attribut `enumerable` valué à `false` ; par example, la propriété `length`
+> d'un tableau.
+
+    // Corruption de Object.prototype
     Object.prototype.bar = 1;
 
     var foo = {moo: 2};
     for(var i in foo) {
-        console.log(i); // prints both bar and moo
+        console.log(i); // sort bar et moo
     }
 
-Since it is not possible to change the behavior of the `for in` loop itself, it
-is necessary to filter out the unwanted properties inside the loop body; 
-this is done by using the [`hasOwnProperty`](#object.hasownproperty) method of 
+Puisqu'il n'est pas possible de changer le comportement de la boucle `for in`, il
+est nécessaire de filtrer les propriétés non désirées dans le corps de la boucle.
+Ceci est fait en utilisant la méthode [`hasOwnProperty`](#object.hasownproperty) de
 `Object.prototype`.
 
-> **Note:** Since the `for in` always traverses the complete prototype chain, it
-> will get slower with each additional layer of inheritance added to an object.
+> **Note :** Puisque `for in` traverse toujours completement la chaîne de prototypes,
+> elle deviendra plus lente avec chaque niveau d'héritage additionel d'un objet.
 
-### Using `hasOwnProperty` for Filtering
+### Utilisation de `hasOwnProperty` pour filtrer
 
-    // still the foo from above
+    // même boucle que dessus
     for(var i in foo) {
         if (foo.hasOwnProperty(i)) {
             console.log(i);
         }
     }
 
-This version is the only correct one to use. Due to the use of `hasOwnProperty`, it
-will **only** print out `moo`. When `hasOwnProperty` is left out, the code is 
-prone to errors in cases where the native prototypes - e.g. `Object.prototype` - 
-have been extended.
+Ceci est la seule façon correcte de procéder. Avec l'usage de `hasOwnProperty`, elle
+ne sortira que `moo`. Si `hasOwnProperty` est laissé de côté, le code peut être sujet
+aux erreurs dans les cas où les objets natifs - par exemple `Object.prototype` - ont
+été étendus.
 
-One widely used framework which does this is [Prototype][1]. When this 
-framework is included, `for in` loops that do not use `hasOwnProperty` are 
-guaranteed to break.
+Une bibliothèque largement répendue qui fait ça est [Prototype][1]. Lorsque cette
+bibliothèque est incluse, les boucles `for in` qui n'utilisent pas `hasOwnProperty`
+seront à coup sûr cassées.
 
-### In Conclusion
+### En conclusion
 
-It is recommended to **always** use `hasOwnProperty`. Never should any 
-assumptions be made about the environment the code is running in, or whether the 
-native prototypes have been extended or not.
+Il est recommandé de **toujours** utiliser `hasOwnProperty`. Aucune présupposition ne
+devrait être faite à propos de l'environnement dans lequel le code sera execut, ou si
+les prototypes natifs ont été étendus ou pas.
 
 [1]: http://www.prototypejs.org/
 
