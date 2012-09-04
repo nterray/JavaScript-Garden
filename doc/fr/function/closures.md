@@ -1,92 +1,92 @@
-## Closures and References
+## Fermetures et références
 
-One of JavaScript's most powerful features is the availability of *closures*.
-With closures, scopes **always** keep access to the outer scope, in which they
-were defined. Since the only scoping that JavaScript has is 
-[function scope](#function.scopes), all functions, by default, act as closures.
+Une des fonctionalités les plus puissantes de JavaScript est la disponibilité
+des *fermetures*. Avec les fermetures, les portées ont **toujours** accès à la
+portée englobante dans laquelle elles sont définies. Puisque les seules portées
+disponibles dans JavaScript sont les [portées de fonction](#function.scopes),
+toutes les fonctions, par défaut, agissent en tant que fermetures.
 
-### Emulating private variables
+### Émulation de variables privées
 
-    function Counter(start) {
-        var count = start;
+    function Compteur(start) {
+        var compte = start;
         return {
             increment: function() {
-                count++;
+                compte++;
             },
 
             get: function() {
-                return count;
+                return compte;
             }
         }
     }
 
-    var foo = Counter(4);
+    var foo = Compteur(4);
     foo.increment();
     foo.get(); // 5
 
-Here, `Counter` returns **two** closures: the function `increment` as well as 
-the function `get`. Both of these functions keep a **reference** to the scope of 
-`Counter` and, therefore, always keep access to the `count` variable that was 
-defined in that very scope.
+Ici, `Compteur` retourne **deux** fermetures : les fonctions `increment` et
+`get`. Chacune de ces fonctions garde une **référence** à `Compteur` et donc
+garde toujours un accès à la variable `compte` qui a été définie dans cette
+portée.
 
-### Why Private Variables Work
+### Pourquoi les variables privées fonctionnent
 
-Since it is not possible to reference or assign scopes in JavaScript, there is 
-**no** way of accessing the variable `count` from the outside. The only way to 
-interact with it is via the two closures.
+Puisqu'il n'est pas possible de référencer ou d'affecter des portées en JavaScript,
+il n'y a **aucun** moyen d'accéder à la variable `compte` depuis l'exterieur. La
+seule façon d'intéragir avec est de le faire via les deux fermetures.
 
-    var foo = new Counter(4);
+    var foo = new Compteur(4);
     foo.hack = function() {
-        count = 1337;
+        compte = 1337;
     };
 
-The above code will **not** change the variable `count` in the scope of `Counter`, 
-since `foo.hack` was not defined in **that** scope. It will instead create - or 
-override - the *global* variable `count`.
+Le code ci-dessus ne changera **pas** la variable `compte` dans la portée de `Compteur`,
+puique `foo.hack` n'a pas été définie dans **cette** portée. À la place il créera - ou
+écrasera - la variable global `compte`.
 
-### Closures Inside Loops
+### Les fermetures dans les boucles
 
-One often made mistake is to use closures inside of loops, as if they were
-copying the value of the loops index variable.
+Une erreur réccurente est d'utiliser les fermetures à l'intérieur des boucles, comme si
+elles copiaient la valeur de l'index de boucle.
 
     for(var i = 0; i < 10; i++) {
         setTimeout(function() {
-            console.log(i);  
+            console.log(i);
         }, 1000);
     }
 
-The above will **not** output the numbers `0` through `9`, but will simply print
-the number `10` ten times.
+Le code ci-dessus n'écrira **pas** les nombres de `0` à `9`, mais affichera simplement
+le nombre `10` dix fois.
 
-The *anonymous* function keeps a **reference** to `i`. At the time 
-`console.log` gets called, the `for loop` has already finished, and the value of 
-`i` as been set to `10`.
+La fonction *anonyme* garde une **référence** sur `i`. Au moment où
+`console.log` est appelée, la `for loop` est déjà terminée, et la valeur de
+`i` vaut `10`.
 
-In order to get the desired behavior, it is necessary to create a **copy** of 
-the value of `i`.
+Afin d'obtenir le résultat escompté, il est nécessaire de créer une **copie** de la valeur
+de `i`.
 
-### Avoiding the Reference Problem
+### S'affranchir du problème de référence
 
-In order to copy the value of the loop's index variable, it is best to use an 
-[anonymous wrapper](#function.scopes).
+Afin de garder une copie de la valeur de l'index de la boucle, il est préférable
+d'utiliser une [enveloppe anonyme](#function.scopes).
 
     for(var i = 0; i < 10; i++) {
         (function(e) {
             setTimeout(function() {
-                console.log(e);  
+                console.log(e);
             }, 1000);
         })(i);
     }
 
-The anonymous outer function gets called immediately with `i` as its first 
-argument and will receive a copy of the **value** of `i` as its parameter `e`.
+La fonction extérieur anonyme est appelée directement avec `i` comme premier argument
+et recevra une copie de la **valeur** de `i` dans le paramètre `e`.
 
-The anonymous function that gets passed to `setTimeout` now has a reference to 
-`e`, whose value does **not** get changed by the loop.
+La fonction anonyme qui est passée à `setTimeout` aura maintenant une référence vers `e`,
+dont la valeur n'est **pas** changée par la boucle.
 
-There is another possible way of achieving this, which is to return a function 
-from the anonymous wrapper that will then have the same behavior as the code 
-above.
+Une autre possibilité consiste à retourner une fonction depuis l'enveloppe anonyme
+qui aura le même comportement que le code ci-dessus.
 
     for(var i = 0; i < 10; i++) {
         setTimeout((function(e) {
