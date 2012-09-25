@@ -1,7 +1,7 @@
 ## Portées et espaces de nommage
 
-Bien que JavaScripe gère bien la syntaxe d'une paire d'accolades pour les blocs,
-il ne le gère **pas** les portées de blocs ; par conséquent, tout ce qui est dans le
+Bien que JavaScript gère bien la syntaxe d'une paire d'accolades pour les blocs,
+il ne gère **pas** les portées de blocs ; par conséquent, tout ce qui existe dans le
 langage est la *portée de fonction*.
 
     function test() { // une portée
@@ -11,17 +11,17 @@ langage est la *portée de fonction*.
         console.log(i); // 10
     }
 
-> **Note :** Lorsqu'il n'est pas utilisé dans une affectation, une instruction return
+> **Note :** Lorsqu'elle n'est pas utilisé dans une affectation, une instruction return
 > ou en tant qu'argument de fonction, la notation `{...}` sera interpretée en tant
 > qu'instruction de bloc et non **pas** comme un objet littéral. Ceci, accompagné de
 > [l'insertion automatique des points-virgules](#core.semicolon), peut être la cause
 > d'erreurs subtiles.
 
-Il n'y a également aucum espace de nommage en JavaScript, ce qui signifie que tout est
+Il n'y a également pas d'espace de nommage en JavaScript, ce qui signifie que tout est
 défini dans un espace *partagé commun*.
 
-Chaque fois qu'une variable est référencée, JavaScript va remonter à traversir la totalité
-des portées jusqu'à ce qu'il la trouve. Si jamais il atteind la portée globale et qu'il
+Chaque fois qu'une variable est référencée, JavaScript va remonter à travers la totalité
+des portées jusqu'à ce qu'il la trouve. Si jamais il atteint la portée globale et qu'il
 n'a toujours pas trouvé le nom requis, il lèvera une `ReferenceError`.
 
 ### Le fléau des variables globales
@@ -48,7 +48,7 @@ d'importantes implications.
     test();
     foo; // 21
 
-Oublier l'instruction à l'interieur de la fonction `test` écrasera la valeur de `foo`.
+L'oubli de l'instruction `var` à l'intérieur de la fonction `test` écrasera la valeur de `foo`.
 Alors que ça ne semble pas poser de problème au premier abord, avoir des milliers de
 lignes de JavaScript sans utiliser `var` introduira d'horribles bugs.
 
@@ -61,11 +61,11 @@ lignes de JavaScript sans utiliser `var` introduira d'horribles bugs.
     function subLoop() {
         // portée de subLoop
         for(i = 0; i < 10; i++) { // instruction var manquante
-            // faisons des choses extraordinaire
+            // faisons des choses extraordinaire!
         }
     }
 
-La boucle exterieure terminera après le premier appel de `subLoop`, puisque cette
+La boucle extérieure terminera après le premier appel de `subLoop`, puisque cette
 dernière écrase la valeur globale de `i`. Utiliser `var` pour la seconde boucle `for`
 aurait évité facilement cette erreur. L'instruction `var` ne devrait **jamais** être
 oubliée à moins que modifier la portée extérieure soit *l'effet désiré*.
@@ -114,7 +114,7 @@ déclaration `function` seront déplacés au dessus de leur portée englobante.
         }
     }
 
-Le code ci-dessus sera transformer avant qu'une execution ne démarre. JavaScript déplace
+Le code ci-dessus sera transformé avant que l'execution ne démarre. JavaScript déplace
 les instructions `var` ainsi que les déclarations de `function` au dessus de la portée englobante
 la plus proche.
 
@@ -136,19 +136,19 @@ la plus proche.
     }
 
     bar(); // lève une TypeError puique bar est encore 'undefined'
-    someValue = 42; // les affectations ne sont pas impactées par le hissage
+    someValue = 42; // les affectations ne sont pas impactées
     bar = function() {};
 
     test();
 
 L'absence de portée de bloc ne déplace pas seulement les instructions hors des
-boucles, elle entraîne des constructions de certain `if` contre-intuitives.
+boucles, elle entraîne des constructions de certains `if` contre-intuitives.
 
 Dans le code original, bien que l'instruction `if` semble modifier la *variable
 globale* `goo`, elle modifie en fait la *variable locale* - après que le hissage
 soit intervenu.
 
-Sans la connaissance sur le *hissage*, le code ci-dessous semble lever une
+Sans connaissances sur le *hissage*, le code ci-dessous semble lever une
 `ReferenceError`.
 
     // vérifie la bonne initialisation de SomeImportantThing
@@ -156,7 +156,7 @@ Sans la connaissance sur le *hissage*, le code ci-dessous semble lever une
         var SomeImportantThing = {};
     }
 
-Bien entendu, le code fonctionnera car l'instruction `var` a été déplacée au sommet
+Bien entendu, le code fonctionnera grace à l'instruction `var` qui a été déplacée au sommet
 de la *portée globale*.
 
     var SomeImportantThing;
@@ -170,26 +170,26 @@ de la *portée globale*.
 
 ### Ordre de résolution des noms
 
-Toutes les portées en JavaScript, y compris la *portée globale*, possèdent le variable
-spéciale [`this`](#function.this), definie en elles, qui référence *l'objet courrant*.
+Toutes les portées en JavaScript, y compris la *portée globale*, possèdent la variable
+spéciale [`this`](#function.this), definie en elles-même, qui référence *l'objet courrant*.
 
 Les portées de fonction possèdent également la variable [`arguments`](#function.arguments),
-définie en elle, qui contient les arguments qui sont passé à la fonction.
+définie en elle-même, qui contient les arguments qui sont passé à la fonction.
 
 Par exemple, quand JavaScript essaie d'accéder à la variable nommée `foo` à l'intérieur de
 la portée d'une fonction, il recherchera selon l'ordre suivant :
 
- 1. Dans le cas où il y a une instruction `var foo` dans la portée courante, utilise la.
- 2. Si l'un des paramètres est nommé `foo`, utilise le.
- 3. Si la fonction elle-même est nommée `foo`, utilise la.
- 4. Va sur la portée immédatement extérieure, et recommence à **#1**.
+ 1. Dans le cas où il y a une instruction `var foo` dans la portée courante, on l'utilise.
+ 2. Si l'un des paramètres est nommé `foo`, on l'utilise.
+ 3. Si la fonction elle-même est nommée `foo`, on l'utilise.
+ 4. On va sur la portée immédatement extérieure, et on recommence à **#1**.
 
-> **Note :** Avoir un paramètre dénommé `arguments` **empechera** la création par défaut de
+> **Note :** Avoir un paramètre dénommé `arguments` **empèchera** la création par défaut de
 > l'objet `arguments`.
 
 ### Espaces de nommage
 
-Un problème fréquent d'avoir un seul espace de nommage global est la probabilité de rencontrer
+Un problème fréquent d'avoir un seul espace de nommage global est la probabilité certaine de rencontrer
 des problèmes de collision de noms. Avec JavaScript, ce risque peut être évité facilement avec
 l'aide *d'encapsulateurs anonymes*.
 
@@ -222,10 +222,10 @@ différentes dans la syntaxe, le résultat sera le même.
 
 ### En conclusion
 
-Il est recommandé de toujours utiliser un *encapsuleur anonyme* pour envolopper le code
-dans son propro namespace. Ceci ne protège pas seulement le code d'une éventuelle collision
-de noms, mais ça permet une meilleure modularité des programmes.
+Il est recommandé de toujours utiliser un *encapsulateur anonyme* pour envelopper le code
+dans son propre espace de nommage. Ceci ne protège pas seulement le code d'une éventuelle collision
+de noms, mais permet une meilleure modularité des programmes.
 
-De plus, l'usage de variables globales ist considéré comme une **mauvaise pratique**. **Tout**
-usage de celles-ci est un indicateur d'un code mal écrit sujet aux erreurs et difficile
+De plus, l'usage de variables globales est considéré comme une **mauvaise pratique**. **Tout**
+usage de celles-ci est un indicateur d'un code mal écrit, sujet aux erreurs et difficile
 à maintenir.
