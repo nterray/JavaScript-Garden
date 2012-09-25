@@ -37,7 +37,7 @@ Ci-dessous est la façon recommendée de passer des arguments d'une fonction à 
         // faire des choses ici
     }
 
-Une autre astuce est d'utiliser à la fois `call` et `apply` pour créer des enveloppes rapides et non liées.
+Une autre astuce est d'utiliser à la fois `call` et `apply` pour créer des encapsulateurs rapides et non liées.
 
     function Foo() {}
 

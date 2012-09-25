@@ -69,7 +69,7 @@ de `i`.
 ### S'affranchir du problème de référence
 
 Afin de garder une copie de la valeur de l'index de la boucle, il est préférable
-d'utiliser une [enveloppe anonyme](#function.scopes).
+d'utiliser une [encapsulateur anonyme](#function.scopes).
 
     for(var i = 0; i < 10; i++) {
         (function(e) {
@@ -85,7 +85,7 @@ et recevra une copie de la **valeur** de `i` dans le paramètre `e`.
 La fonction anonyme qui est passée à `setTimeout` aura maintenant une référence vers `e`,
 dont la valeur n'est **pas** changée par la boucle.
 
-Une autre possibilité consiste à retourner une fonction depuis l'enveloppe anonyme
+Une autre possibilité consiste à retourner une fonction depuis l'encapsulateur anonyme
 qui aura le même comportement que le code ci-dessus.
 
     for(var i = 0; i < 10; i++) {

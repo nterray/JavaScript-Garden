@@ -191,7 +191,7 @@ la portée d'une fonction, il recherchera selon l'ordre suivant :
 
 Un problème fréquent d'avoir un seul espace de nommage global est la probabilité de rencontrer
 des problèmes de collision de noms. Avec JavaScript, ce risque peut être évité facilement avec
-l'aide *d'enveloppe anonymes*.
+l'aide *d'encapsulateurs anonymes*.
 
     (function() {
         // un espace de nommage autonome
