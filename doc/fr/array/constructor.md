@@ -1,35 +1,34 @@
-## The `Array` Constructor
+## Le constructeur `Array`
 
-Since the `Array` constructor is ambiguous in how it deals with its parameters,
-it is highly recommended to always use the array literals - `[]` notation - 
-when creating new arrays.
+Puisque le constructor `Array` est ambigu quant à sa gestion des paramètres,
+il est fortement recommendé de toujours utiliser la notation `[]` lorsqu'on crée
+des tableaux.
 
-    [1, 2, 3]; // Result: [1, 2, 3]
-    new Array(1, 2, 3); // Result: [1, 2, 3]
+    [1, 2, 3]; // Resultat: [1, 2, 3]
+    new Array(1, 2, 3); // Resultat: [1, 2, 3]
 
-    [3]; // Result: [3]
-    new Array(3); // Result: []
-    new Array('3') // Result: ['3']
+    [3]; // Resultat: [3]
+    new Array(3); // Resultat: []
+    new Array('3') // Resultat: ['3']
 
-In cases when there is only one argument passed to the `Array` constructor
-and when that argument is a `Number`, the constructor will return a new *sparse* 
-array with the `length` property set to the value of the argument. It should be 
-noted that **only** the `length` property of the new array will be set this way; 
-the actual indexes of the array will not be initialized. 
+Dans les cas où il n'y a qu'un argument passé au constructeur `Array` et quand cet
+argument est un `Number`, le constructeur retournera un tableau *fragmenté* avec la
+propriété `length` qui prend la valeur de l'argument. Notons que *seule* la propriété
+`length` du nouveau tableau sera positionné de cette façon ; les index du tableau ne
+seront pas initialisés.
 
     var arr = new Array(3);
     arr[1]; // undefined
-    1 in arr; // false, the index was not set
+    1 in arr; // false, l'index n'a pas été défini
 
-The behavior of being able to set the length of the array upfront only comes in 
-handy in a few cases, like repeating a string, in which it avoids the use of a 
-`for loop` code.
+La possibilité de pouvoir définir la longueur d'un tableau en amont est pratique
+dans peu de cas, comme répéter une chaine, ce qui permet d'éviter l'usage d'une
+boucle `for loop`.
 
-    new Array(count + 1).join(stringToRepeat);
+    new Array(count + 1).join(chaine_a_repeter);
 
-### In Conclusion
+### En conclusion
 
-The use of the `Array` constructor should be avoided as much as possible. 
-Literals are definitely preferred. They are shorter and have a clearer syntax; 
-therefore, they also increase the readability of the code.
-
+L'usage du constructeur devrait être évité autant que faire se peut. Les littéraux
+sont préférables. Ils sont plus courts et possèdent une syntaxe plus claire. De plus,
+ils améliorent la lisibilité du code.
