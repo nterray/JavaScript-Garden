@@ -1,13 +1,13 @@
-## Equality and Comparisons
+## Égalité et comparaisons
 
-JavaScript has two different ways of comparing the values of objects for equality. 
+JavaScript offre différentes façons d'évaluer l'égalité des objets.
 
-### The Equality Operator
+### L'opérateur d'égalité
 
-The equality operator consists of two equal signs: `==`
+L'opérateur d'égalité consiste en deux signes égal: `==`
 
-JavaScript features *weak typing*. This means that the equality operator 
-**coerces** types in order to compare them.
+JavaScript repose sur le *typage faible*. Ceci signifie que l'opérateur d'égalité
+**convertit** les types afin de pouvoir les comparer.
     
     ""           ==   "0"           // false
     0            ==   ""            // true
@@ -19,20 +19,21 @@ JavaScript features *weak typing*. This means that the equality operator
     null         ==   undefined     // true
     " \t\r\n"    ==   0             // true
 
-The above table shows the results of the type coercion, and it is the main reason 
-why the use of `==` is widely regarded as bad practice. It introduces
-hard-to-track-down bugs due to its complicated conversion rules.
+La table ci-dessus montre les résultats de la convertion de type, et c'est la
+principale raison pourquoi l'usage de `==` est généralement considéré comme une
+mauvaise pratique. Il introduit des bugs difficiles à tracer dû à la complexité des
+règles de conversion.
 
-Additionally, there is also a performance impact when type coercion is in play;
-for example, a string has to be converted to a number before it can be compared
-to another number.
+En plus de cela, il y a des problèmes de performance lorsque la conversion entre
+en jeu. Par exemple, une chaîne de caractères doit être convertie en nombre avant qu'elle puisse
+être comparée à un autre nombre.
 
-### The Strict Equality Operator
+### L'opérateur d'égalité stricte
 
-The strict equality operator consists of **three** equal signs: `===`.
+L'opérateur d'égalité stricte consiste en **trois** signes égal: `===`.
 
-It works exactly like the normal equality operator, except that strict equality 
-operator does **not** perform type coercion between its operands.
+Il fonctionne de la même manière que l'opérateur d'égalité classique, hormis le fait
+qu'il n'effectue **pas** de conversion de types entre ses opérandes.
 
     ""           ===   "0"           // false
     0            ===   ""            // false
@@ -44,14 +45,15 @@ operator does **not** perform type coercion between its operands.
     null         ===   undefined     // false
     " \t\r\n"    ===   0             // false
 
-The above results are a lot clearer and allow for early breakage of code. This
-hardens code to a certain degree and also gives performance improvements in case
-the operands are of different types.
+Les résultats ci-dessus sont bien plus clairs est permettent une rupture du code 
+anticipée. Ceci renforce le code à un certain degré et apporte des gains de performance
+dans les cas où les opérandes sont de différents types.
 
-### Comparing Objects
+### Comparer des objets
 
-While both `==` and `===` are stated as **equality** operators, they behave 
-differently when at least one of their operands happens to be an `Object`.
+Alors que les deux `==` et `===` sont statués comme des opérateurs **d'égalité**, ils
+ont un comportement différents lorsqu'au moins un de leurs opérandes se trouve être
+un `Object`.
 
     {} === {};                   // false
     new String('foo') === 'foo'; // false
@@ -59,13 +61,14 @@ differently when at least one of their operands happens to be an `Object`.
     var foo = {};
     foo === foo;                 // true
 
-Here, both operators compare for **identity** and **not** equality; that is, they
-will compare for the same **instance** of the object, much like `is` in Python 
-and pointer comparison in C.
+Ici, les deux opérateurs comparent **l'identité** et **non pas** l'égalité. Ils compareront
+pour la même **instance** de l'objet, tout comme `is` en Python et la comparaison
+de pointeurs en C.
 
-### In Conclusion
+### En conclusion
 
-It is highly recommended to only use the **strict equality** operator. In cases
-where types need to be coerced, it should be done [explicitly](#types.casting) 
-and not left to the language's complicated coercion rules.
+Il est hautement recommendé d'utiliser seulement l'opérateur **d'égalité stricte**.
+Dans le cas où les types doivent être convertis, ça devrait être fait 
+[explicitement](#types.casting) et ne pas être laissé à la discrétion des règles de
+conversion compliquées du langage.
 
