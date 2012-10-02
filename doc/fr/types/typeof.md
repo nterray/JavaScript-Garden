@@ -1,21 +1,21 @@
-## The `typeof` Operator
+## L'opérateur `typeof`
 
-The `typeof` operator (together with 
-[`instanceof`](#types.instanceof)) is probably the biggest 
-design flaw of JavaScript, as it is near of being **completely broken**.
+L'opérateur `typeof` (avec [`instanceof`](#types.instanceof)) est probablement
+le plus grand défaut de conception de JavaScript, puisque il est proche de 
+l'état «**completement cassé**».
 
-Although `instanceof` still has its limited uses, `typeof` really has only one
-practical use case, which does **not** happen to be checking the type of an 
-object. 
+Bien que `instanceof` puisse avoir quelques usages limités, `typeof` n'a seulement
+qu'un cas pratique, qui s'avère ne **pas** concerner la vérification du type
+d'un objet.
 
-> **Note:** While `typeof` can also be called with a function like syntax
-> i.e. `typeof(obj)`, this is not a function call. The two parenthesis will
-> behave like normal and the return value will be used as the operand of the
-> `typeof` operator. There is **no** `typeof` function.
+> **Note :** Bien que `typeof` puisse être appelé comme une fonction
+> i.e. `typeof(obj)`, ce n'est pas un appel de fonction. Les deux parenthèses se
+> comporteront normalement et le résultat de l'expression sera utilisé comme 
+> opérande pour l'opérateur `typeof`. Il n'y a **pas** de fonction `typeof`.
 
-### The JavaScript Type Table
+### La table des types JavaScript
 
-    Value               Class      Type
+    Valeur              Classe     Type
     -------------------------------------
     "foo"               String     string
     new String("foo")   String     object
@@ -28,27 +28,29 @@ object.
     [1,2,3]             Array      object
     new Array(1, 2, 3)  Array      object
     new Function("")    Function   function
-    /abc/g              RegExp     object (function in Nitro/V8)
-    new RegExp("meow")  RegExp     object (function in Nitro/V8)
+    /abc/g              RegExp     object (fonction dans Nitro/V8)
+    new RegExp("miaou") RegExp     object (fonction dans Nitro/V8)
     {}                  Object     object
     new Object()        Object     object
 
-In the above table, *Type* refers to the value that the `typeof` operator returns.
-As can be clearly seen, this value is anything but consistent.
+Dans la table précédente, *Type* référence la valeur que l'opérateur `typeof`
+retourne. Comme on peut clairement le voir, les valeurs sont tout sauf
+cohérentes.
 
-The *Class* refers to the value of the internal `[[Class]]` property of an object.
+*Classe* référence la valeur de la propriété interne `[[Class]]` d'un 
+objet.
 
-> **From the Specification:** The value of `[[Class]]` can be one of the
-> following strings. `Arguments`, `Array`, `Boolean`, `Date`, `Error`, 
+> **Selon la spécification :** La valeur de `[[Class]]` peut être l'une des
+> chaînes de caractères suivantes. `Arguments`, `Array`, `Boolean`, `Date`, `Error`, 
 > `Function`, `JSON`, `Math`, `Number`, `Object`, `RegExp`, `String`.
 
-In order to retrieve the value of `[[Class]]`, one has to make use of the
-`toString` method of `Object.prototype`.
+Afin de pouvoir obtenir la valeur de `[[Class]]`, on doit utiliser la méthode
+`toString` sur `Object.prototype`.
 
-### The Class of an Object
+### La classe d'un objet
 
-The specification gives exactly one way of accessing the `[[Class]]` value,
-with the use of `Object.prototype.toString`. 
+La spécification donne une seule manière d'accéder à la valeur de `[[Class]]`,
+en utilisant `Object.prototype.toString`.
 
     function is(type, obj) {
         var clas = Object.prototype.toString.call(obj).slice(8, -1);
@@ -58,30 +60,28 @@ with the use of `Object.prototype.toString`.
     is('String', 'test'); // true
     is('String', new String('test')); // true
 
-In the above example, `Object.prototype.toString` gets called with the value of
-[this](#function.this) being set to the object whose `[[Class]]` value should be 
-retrieved.
+Dans l'exemple précédent, `Object.prototype.toString` est appelée avec la valeur de
+[this](#function.this), objet dont la valeur de `[[Class]]` doit être obtenue.
 
-> **ES5 Note:** For convenience the return value of `Object.prototype.toString` 
-> for both `null` and `undefined` was **changed** from `Object` to `Null` and 
-> `Undefined` in ECMAScript 5.
+> **Note ES5 :** pour plus de commodité, la valeur de `Object.prototype.toString` 
+> retournée pour `null` et `undefined` a **changé** de `Object` à `Null` et `Undefined`
+> en ECMAScript 5.
 
-### Testing for Undefined Variables
+### Tester les variables undéfinies
 
     typeof foo !== 'undefined'
 
-The above will check whether `foo` was actually declared or not; just 
-referencing it would result in a `ReferenceError`. This is the only thing
-`typeof` is actually useful for.
+Le code ci-dessus vérifiera si `foo` est déclarée ou pas. La référencer résulerait
+en une `ReferenceError`. C'est la seule chose pour laquelle `typeof` peut
+être utile.
 
-### In Conclusion
+### En conclusion
 
-In order to check the type of an object, it is highly recommended to use 
-`Object.prototype.toString` because this is the only reliable way of doing so. 
-As shown in the above type table, some return values of `typeof` are not defined 
-in the specification; thus, they can differ across various implementations.
+Pour vérifier le type d'un objet, il est fortement recommandé d'utiliser
+`Object.prototype.toString` parce que c'est la seule manière fiable de 
+procéder. Comme montré dans la table de types ci-dessus, certaines valeurs
+retournées par `typeof` ne sont pas définies dans la spécification ; elles 
+peuvent donc différer en fonction des différentes implémentations.
 
-Unless checking whether a variable is defined, `typeof` should be avoided at
-**all costs**.
-
-
+Sauf pour vérifier si une variable est définie, `typeof` doit être évité **à tout
+prix**.
