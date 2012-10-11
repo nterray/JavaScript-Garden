@@ -1,6 +1,7 @@
-## Why Not to Use `eval`
+## Pourquoi ne pas utiliser `eval`
 
-The `eval` function will execute a string of JavaScript code in the local scope.
+La fonction `eval` exécute une chaîne contenant un code JavaScript dans la portée
+locale.
 
     var foo = 1;
     function test() {
@@ -11,8 +12,9 @@ The `eval` function will execute a string of JavaScript code in the local scope.
     test(); // 3
     foo; // 1
 
-However, `eval` only executes in the local scope when it is being called
-**directly** *and* when the name of the called function is actually `eval`.
+Cepandant, `eval` ne s'exécute dans la portée locale que lorsqu'elle est
+**directement** *et* lorsque le nom de la fonction appelée est effectivement
+`eval`.
 
     var foo = 1;
     function test() {
@@ -24,24 +26,27 @@ However, `eval` only executes in the local scope when it is being called
     test(); // 2
     foo; // 3
 
-The use of `eval` should be avoided at **all costs**. 99.9% of its "uses" can be
-achieved **without** it.
-    
-### `eval` in Disguise
+L'usage de `eval` devrait être évité **à tout prix**. 99.9% de ses utulisations peuvent 
+être effectuées sans elles.
 
-The [timeout functions](#other.timeouts) `setTimeout` and `setInterval` can both 
-take a string as their first argument. This string will **always** get executed 
-in the global scope since `eval` is not being called directly in that case.
+### `eval` déguisé
 
-### Security Issues
+Les [fonctions timeout](#other.timeouts) `setTimeout` et `setInterval` peuvent toutes les
+deux prendre une chaîne en tant que premier argument. Cette chaîne sera **toujours**
+exécutée dans la portée locale puisque `eval` n'est pas appelée directement dans ce cas.
 
-`eval` also is a security problem. Because it executes **any** code given to it,
-it should **never** be used with strings of unknown or untrusted origins.
+### Problèmes de sécurité
 
-### In Conclusion
+`eval` est aussi un problème de sécurité. Puisqu'elle exécute **tout** code qui
+lui est passée, elle ne doit **jamais** être utilisée avec des chaînes provenant
+de sources non fiables ou inconnues.
 
-`eval` should never be used. Any code that makes use of it is to be questioned in
-its workings, performance and security. In case something requires `eval` in 
-order to work, it should **not** be used in the first place.
-A *better design* should be used, that does not require the use of `eval`.
+### En conclusion
+
+`eval` ne devrait jamais être utilisée. Tout code qui l'utilise doit être remis en
+cause dans son fonctionnement, sa performance et sa sécurité. Dans le cas où 
+quelque chose requière `eval` pour fonctionner, il ne devrait **pas** l'utiliser en
+premier lieu.
+Une *meilleure conception* doit être utilisée, qui ne nécessite pas l'utilisation de
+`eval`
 
